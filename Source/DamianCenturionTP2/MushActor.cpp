@@ -62,17 +62,30 @@ void AMushActor::Tick(float DeltaTime)
 void AMushActor::OnTopBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
 	if (topBoxCollider)
 		topBoxCollider->OnComponentHit.RemoveAll(this);
+
+	if (OtherActor->IsA<APaperCharacterParcial>()) {
+		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
+		if (charP)
+			charP->AddImpulseAfterKillingEnemy();
+	}
+
 	Destroy();
 }
 
 void AMushActor::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	if (OtherActor->IsA<AMushActor>()) {
+		return;
+	}
 	speed *= -1;
 	CheckIfCollideWithPlayer(OtherActor);
 }
 
 void AMushActor::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	if (OtherActor->IsA<AMushActor>()) {
+		return;
+	}
 	speed *= -1;
 	CheckIfCollideWithPlayer(OtherActor);
 }

@@ -48,10 +48,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		float cameraZpositionOffset;
 
+	UPROPERTY(EditAnywhere)
+		float impulseAfterKillingEnemy = 200;
+
 // 	UPROPERTY(EditAnywhere)
 // 		UCameraComponent* _camera;
 
 	void OnHit();
+	void AddImpulseAfterKillingEnemy();
 
 private:
 	TMap<FString, UPaperFlipbook*> anims;

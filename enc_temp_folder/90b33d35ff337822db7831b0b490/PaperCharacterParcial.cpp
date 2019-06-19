@@ -108,9 +108,7 @@ void APaperCharacterParcial::OnHit() {
 }
 
 void APaperCharacterParcial::AddImpulseAfterKillingEnemy() {
-	//GetCharacterMovement()->AddImpulse(GetActorUpVector() * impulseAfterKillingEnemy);
-	//GetCharacterMovement()->
-	LaunchCharacter(GetActorUpVector() * impulseAfterKillingEnemy, false, false);
+	GetCharacterMovement()->AddImpulse(GetActorUpVector() * impulseAfterKillingEnemy);
 }
 
 
