@@ -31,6 +31,15 @@ public:
 	UPROPERTY(EditAnywhere)
 		UPaperFlipbook* animJump;
 
+	UPROPERTY(EditAnywhere)
+		UPaperFlipbook* animIdleBig;
+
+	UPROPERTY(EditAnywhere)
+		UPaperFlipbook* animRunBig;
+
+	UPROPERTY(EditAnywhere)
+		UPaperFlipbook* animJumpBig;
+
 
 	UPROPERTY(EditAnywhere)
 		float jumpForce = 1000;
@@ -51,16 +60,24 @@ public:
 	UPROPERTY(EditAnywhere)
 		float impulseAfterKillingEnemy = 200;
 
-// 	UPROPERTY(EditAnywhere)
-// 		UCameraComponent* _camera;
+	UPROPERTY(EditAnywhere)
+		int maxSize = 2;
+
+	UPROPERTY(EditAnywhere)
+		float capsuleComponentSizeOnBig = 103;
+
+	UPROPERTY(EditAnywhere)
+		float capsuleComponentSizeOnSmall = 55;
 
 	void OnHit();
 	void AddImpulseAfterKillingEnemy();
+	
+	int size = 1;
 
 private:
 	TMap<FString, UPaperFlipbook*> anims;
 
-	
+	UCapsuleComponent * _capsuleCollider;
 
 	void SetHorizontal(float h);
 	void SetJump();
@@ -76,6 +93,10 @@ private:
 	const FString RUN_SMALL = "runSmall";
 	const FString IDLE_SMALL = "idleSmall";
 	const FString JUMP_SMALL = "jumpSmall";
+
+	const FString RUN_BIG = "runBig";
+	const FString IDLE_BIG = "idleBig";
+	const FString JUMP_BIG= "jumpBig";
 	
 	
 };

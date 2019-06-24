@@ -7,6 +7,8 @@
 #include "ConstructorHelpers.h"
 #include "Paper2DClasses.h"
 #include "PaperSprite.h"
+#include "Coin.h"
+#include "Engine/World.h"
 #include "Paper_QuestionBlock.generated.h"
 
 /**
@@ -37,6 +39,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		int amountOfHits;
-	
-	
+
+	UPROPERTY(EditAnywhere)
+		UPaperSprite* usedBoxSprite;
+
+private:
+
+	TSubclassOf<class ACoin> coinPrefab;	
 };

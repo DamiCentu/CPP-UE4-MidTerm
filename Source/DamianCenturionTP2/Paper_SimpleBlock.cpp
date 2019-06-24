@@ -12,7 +12,6 @@ APaper_SimpleBlock::APaper_SimpleBlock()
 	if (_spriteComponent && sprite.Object)
 		_spriteComponent->SetSprite(sprite.Object);
 
-	//RootComponent = _spriteComponent;
 }
 
 void APaper_SimpleBlock::BeginPlay()
