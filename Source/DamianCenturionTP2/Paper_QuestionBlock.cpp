@@ -7,7 +7,13 @@ APaper_QuestionBlock::APaper_QuestionBlock()
 {
 	_spriteComponent = GetRenderComponent();
 
+//#if WITH_EDITOR
 	auto coinBPPrefab = ConstructorHelpers::FObjectFinder<UBlueprint>(TEXT("Blueprint'/Game/MyContent/Blueprints/BP_Coin.BP_Coin'"));
+//#endif
+
+//#if !WITH_EDITOR
+//	auto coinBPPrefab = ConstructorHelpers::FObjectFinder<UBlueprint>(TEXT("Class'/Game/MyContent/Blueprints/BP_Coin.BP_Coin_C'"));
+//#endif
 
 	if (coinBPPrefab.Object)
 		coinPrefab = coinBPPrefab.Object->GeneratedClass;
