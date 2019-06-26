@@ -49,6 +49,8 @@ void AMushActor::BeginPlay()
 
 	if (rightBoxCollider)
 		rightBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AMushActor::OnRightBoxBeginOverlap);
+
+	_onTriggerAction.AddDynamic(this, &AMushActor::CheckIfCollideWithPlayer);
 }
 
 // Called every frame
@@ -78,7 +80,7 @@ void AMushActor::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AAc
 		return;
 	}
 	speed *= -1;
-	CheckIfCollideWithPlayer(OtherActor);
+	_onTriggerAction.Broadcast(OtherActor);
 }
 
 void AMushActor::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
@@ -87,14 +89,14 @@ void AMushActor::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AA
 		return;
 	}
 	speed *= -1;
-	CheckIfCollideWithPlayer(OtherActor);
+	_onTriggerAction.Broadcast(OtherActor);
 }
 
 void AMushActor::CheckIfCollideWithPlayer(AActor * other) {
-	if (other->IsA<APaperCharacterParcial>()) {
-		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(other);
-		if (charP)
-			charP->OnHit();
-	}
+		IOnHit * hitActor = Cast<IOnHit>(other);
+		if (hitActor){
+			hitActor->OnHit();
+			Destroy();
+		}
 }
 

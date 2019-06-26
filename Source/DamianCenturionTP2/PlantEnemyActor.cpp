@@ -66,10 +66,9 @@ void APlantEnemyActor::Move() {
 
 void APlantEnemyActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<APaperCharacterParcial>()) {
-		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
-		if (charP)
-			charP->OnHit();
+	IOnHit * hitActor = Cast<IOnHit>(OtherActor);
+	if (hitActor) {
+		hitActor->OnHit();
 	}
 }
 

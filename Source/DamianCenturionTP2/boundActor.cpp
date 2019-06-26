@@ -33,7 +33,7 @@ void AboundActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor
 	if (OtherActor->IsA<APaperCharacterParcial>()) {
 		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
 		if (charP)
-			charP->OnHit();
+			charP->OnHit(true);
 	}
 }
 

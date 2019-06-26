@@ -3,12 +3,15 @@
 #pragma once
 
 #include "Engine.h"
+#include "OnHit.h"
 #include "GameFramework/Actor.h"
 #include "ConstructorHelpers.h"
 #include "Paper2DClasses.h"
 #include "PaperSprite.h"
 #include "PaperCharacterParcial.h"
 #include "MushActor.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHitCheck, AActor*, actor);
 
 UCLASS()
 class DAMIANCENTURIONTP2_API AMushActor : public AActor
@@ -31,6 +34,9 @@ public:
 		float speed = 500;
 
 private:
+	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
+		FHitCheck _onTriggerAction;
+
 	UPaperFlipbookComponent* _spriteComponent;
 
 	UFUNCTION()
@@ -42,7 +48,8 @@ private:
 	UFUNCTION()
 		void OnRightBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	void CheckIfCollideWithPlayer(AActor * other);
+	UFUNCTION()
+		void CheckIfCollideWithPlayer(AActor * other);
 
 	UBoxComponent * leftBoxCollider;
 

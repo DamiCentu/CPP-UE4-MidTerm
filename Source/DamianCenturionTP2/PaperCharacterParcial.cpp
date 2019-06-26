@@ -135,9 +135,9 @@ void APaperCharacterParcial::MyStopJump()
 	bPressedJump = false;
 }
 
-void APaperCharacterParcial::OnHit() {
+void APaperCharacterParcial::OnHit(bool instaKill) {
 	size--;
-	if (size < 1)
+	if (size < 1 || instaKill)
 	{
 		UGameplayStatics::OpenLevel(GetWorld(), FName(*UGameplayStatics::GetCurrentLevelName(GetWorld())));
 	}

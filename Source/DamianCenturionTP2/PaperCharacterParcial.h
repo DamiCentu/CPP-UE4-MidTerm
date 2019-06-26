@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Engine.h"
+#include "OnHit.h"
 #include "Engine/World.h"
 #include "PaperCharacter.h"
 #include "ConstructorHelpers.h"
@@ -13,7 +14,7 @@
  * 
  */
 UCLASS()
-class DAMIANCENTURIONTP2_API APaperCharacterParcial : public APaperCharacter
+class DAMIANCENTURIONTP2_API APaperCharacterParcial : public APaperCharacter , public IOnHit
 {
 	GENERATED_BODY()
 	
@@ -69,10 +70,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		float capsuleComponentSizeOnSmall = 55;
 
-	void OnHit();
 	void AddImpulseAfterKillingEnemy();
 	
 	int size = 1;
+
+	virtual void OnHit(bool instaKill = false) override;
 
 private:
 	TMap<FString, UPaperFlipbook*> anims;
@@ -87,8 +89,6 @@ private:
 	void AddFlipbook(FString name, UPaperFlipbook * object);
 
 	void ChangeAnimation(FString name);
-
-	
 
 	const FString RUN_SMALL = "runSmall";
 	const FString IDLE_SMALL = "idleSmall";
