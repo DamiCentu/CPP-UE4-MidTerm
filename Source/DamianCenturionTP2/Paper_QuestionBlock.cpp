@@ -7,16 +7,17 @@ APaper_QuestionBlock::APaper_QuestionBlock()
 {
 	_spriteComponent = GetRenderComponent();
 
-//#if WITH_EDITOR
+#if WITH_EDITOR
 	auto coinBPPrefab = ConstructorHelpers::FObjectFinder<UBlueprint>(TEXT("Blueprint'/Game/MyContent/Blueprints/BP_Coin.BP_Coin'"));
-//#endif
-
-//#if !WITH_EDITOR
-//	auto coinBPPrefab = ConstructorHelpers::FObjectFinder<UBlueprint>(TEXT("Class'/Game/MyContent/Blueprints/BP_Coin.BP_Coin_C'"));
-//#endif
-
 	if (coinBPPrefab.Object)
 		coinPrefab = coinBPPrefab.Object->GeneratedClass;
+#endif
+
+#if !WITH_EDITOR
+	auto coinBPPrefab = ConstructorHelpers::FObjectFinder<UClass>(TEXT("Class'/Game/MyContent/Blueprints/BP_Coin.BP_Coin_C'"));
+	if (coinBPPrefab.Object)
+		coinPrefab = coinBPPrefab.Object;
+#endif
 
 	auto sprite = ConstructorHelpers::FObjectFinder<UPaperSprite>(TEXT("PaperSprite'/Game/MyContent/Sprites/Enviroment/SpriteSheetEnvironment_Enviroment_24.SpriteSheetEnvironment_Enviroment_24'"));
 
