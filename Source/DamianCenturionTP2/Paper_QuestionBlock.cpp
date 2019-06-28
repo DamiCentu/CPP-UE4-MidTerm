@@ -21,6 +21,11 @@ APaper_QuestionBlock::APaper_QuestionBlock()
 
 	auto sprite = ConstructorHelpers::FObjectFinder<UPaperSprite>(TEXT("PaperSprite'/Game/MyContent/Sprites/Enviroment/SpriteSheetEnvironment_Enviroment_24.SpriteSheetEnvironment_Enviroment_24'"));
 
+	auto audioClip = ConstructorHelpers::FObjectFinder<USoundWave>(TEXT("SoundWave'/Game/MyContent/Sounds/Coin_Sound.Coin_Sound'"));
+
+	if (audioClip.Object)
+		coinClip = audioClip.Object;
+
 	if (_spriteComponent && sprite.Object)
 		_spriteComponent->SetSprite(sprite.Object);
 }
@@ -28,6 +33,12 @@ APaper_QuestionBlock::APaper_QuestionBlock()
 void APaper_QuestionBlock::BeginPlay()
 {
 	_boxCollider = FindComponentByClass<UBoxComponent>();
+
+	audioComp = FindComponentByClass<UAudioComponent>();
+	if (audioComp)
+	{
+		audioComp->Stop();
+	}
 
 	if (_boxCollider)
 		_boxCollider->OnComponentHit.AddDynamic(this, &APaper_QuestionBlock::OnBoxHit);
@@ -44,6 +55,12 @@ void APaper_QuestionBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherA
 		params.Owner = this;
 		auto coin = world->SpawnActor<ACoin>(coinPrefab, this->GetTransform(), params);
 		coin->SetCoinAfterHitted();
+
+		if (audioComp && coinClip)
+		{
+			audioComp->Sound = coinClip;
+			audioComp->Play();
+		}
 	}
 
 	if (amountOfHits > 0)

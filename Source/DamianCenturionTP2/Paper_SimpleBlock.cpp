@@ -17,6 +17,7 @@ APaper_SimpleBlock::APaper_SimpleBlock()
 void APaper_SimpleBlock::BeginPlay()
 {
 	_boxCollider = FindComponentByClass<UBoxComponent>();
+	//_destructiveComponent = FindComponentByClass<UDestructibleComponent>();
 
 	if (_boxCollider)
 		_boxCollider->OnComponentHit.AddDynamic(this, &APaper_SimpleBlock::OnBoxHit);
@@ -25,5 +26,7 @@ void APaper_SimpleBlock::BeginPlay()
 void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
 	if (_boxCollider)
 		_boxCollider->OnComponentHit.RemoveAll(this);
-	Destroy();
+
+	_spriteComponent->SetVisibility(false);
+	
 }

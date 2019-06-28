@@ -45,5 +45,9 @@ public:
 
 private:
 
+	UAudioComponent* audioComp;
+
+	USoundWave* coinClip;
+
 	TSubclassOf<class ACoin> coinPrefab;	
 };

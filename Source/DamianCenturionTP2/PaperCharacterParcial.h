@@ -71,6 +71,9 @@ public:
 		float capsuleComponentSizeOnSmall = 55;
 
 	void AddImpulseAfterKillingEnemy();
+
+	UPROPERTY(EditAnywhere)
+		USoundWave* jumpClip;
 	
 	int size = 1;
 
@@ -89,6 +92,8 @@ private:
 	void AddFlipbook(FString name, UPaperFlipbook * object);
 
 	void ChangeAnimation(FString name);
+
+	UAudioComponent* audioComp;
 
 	const FString RUN_SMALL = "runSmall";
 	const FString IDLE_SMALL = "idleSmall";

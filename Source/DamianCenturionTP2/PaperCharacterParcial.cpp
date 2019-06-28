@@ -8,6 +8,12 @@ void APaperCharacterParcial::BeginPlay()
 	PrimaryActorTick.bCanEverTick = true;
 	Super::BeginPlay();
 
+	audioComp = FindComponentByClass<UAudioComponent>();
+	if (audioComp)
+	{
+		audioComp->Stop();
+	}
+
 	for (TActorIterator<AActor> actorItr(GetWorld()); actorItr; ++actorItr)
 	{
 		AActor * act = *actorItr;
@@ -120,6 +126,12 @@ void APaperCharacterParcial::SetJump()
 {
 	if (GetCharacterMovement()->IsMovingOnGround()) {		
 		bPressedJump = true;
+
+		if (audioComp)
+		{
+			audioComp->Sound = jumpClip;
+			audioComp->Play();
+		}
 		if (size == 1) {
 			ChangeAnimation(JUMP_SMALL);
 		}
