@@ -3,20 +3,18 @@
 #pragma once
 
 #include "Engine.h"
-#include "OnHit.h"
 #include "GameFramework/Actor.h"
 #include "TimerManager.h"
-#include "PaperCharacterParcial.h"
-#include "PlantEnemyActor.generated.h"
+#include "MovilPlatform.generated.h"
 
 UCLASS()
-class DAMIANCENTURIONTP2_API APlantEnemyActor : public AActor, public IOnHit
+class DAMIANCENTURIONTP2_API AMovilPlatform : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	APlantEnemyActor();
+	AMovilPlatform();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,9 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		AActor* posTwo;
-	
+
 	UPROPERTY(EditAnywhere)
-		float loopDelay = 0.0f;
+		float loopDelay = 2.0f;
 
 	UPROPERTY(EditAnywhere)
 		float startDelay = 2.0f;
@@ -41,18 +39,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		float speed = 200.0f;
 
-
-	virtual void OnHit(bool instaKill = false) override;
-
 private:
 	void Move();
 
 	AActor* _currentActor;
 
 	bool _canMove;
-
-	UBoxComponent * _boxCollider;
-
-	UFUNCTION()
-		void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
 };

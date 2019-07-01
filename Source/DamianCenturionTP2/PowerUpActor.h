@@ -9,6 +9,7 @@
 #include "PaperSprite.h"
 #include "PaperCharacterParcial.h"
 #include "MushActor.h"
+#include "Paper_SimpleBlock.h"
 #include "PowerUpActor.generated.h"
 
 UCLASS()

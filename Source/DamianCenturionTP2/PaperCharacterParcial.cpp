@@ -8,6 +8,8 @@ void APaperCharacterParcial::BeginPlay()
 	PrimaryActorTick.bCanEverTick = true;
 	Super::BeginPlay();
 
+	_fireSpawnPoint = FindComponentByClass<UChildActorComponent>();
+
 	audioComp = FindComponentByClass<UAudioComponent>();
 	if (audioComp)
 	{
@@ -83,7 +85,7 @@ void APaperCharacterParcial::Tick(float DeltaSeconds)
 		_capsuleCollider->GetUnscaledCapsuleSize(radius, size);
 		_capsuleCollider->SetCapsuleSize(radius, capsuleComponentSizeOnSmall);
 	}
-	else if (size == 2 && _capsuleCollider)
+	else if (size >= 2 && _capsuleCollider)
 	{
 		float size = 0;
 		float radius = 0;
@@ -91,6 +93,9 @@ void APaperCharacterParcial::Tick(float DeltaSeconds)
 		_capsuleCollider->SetCapsuleSize(radius, capsuleComponentSizeOnBig);
 	}
 
+
+	SetActorLocation(FVector(GetActorLocation().X, 0, GetActorLocation().Z));
+	SetActorRotation(FRotator(0, 0, 0));
 }
 
 void APaperCharacterParcial::SetupPlayerInputComponent(UInputComponent * PlayerInputComponent)
@@ -98,12 +103,13 @@ void APaperCharacterParcial::SetupPlayerInputComponent(UInputComponent * PlayerI
 	PlayerInputComponent->BindAxis("Horizontal", this, &APaperCharacterParcial::SetHorizontal);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed ,this, &APaperCharacterParcial::SetJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &APaperCharacterParcial::MyStopJump);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APaperCharacterParcial::Shoot);
 }
 
 void APaperCharacterParcial::SetHorizontal(float h)
 {
 	speed = h > 0 ? 1 : h < 0  ? - 1 : 0;
-	AddMovementInput(GetActorForwardVector(), speed);
+	AddMovementInput(GetActorForwardVector(), speed * _speedScale);
 	if (speed != 0)
 	{
 		if (GetCharacterMovement()->IsMovingOnGround()) {
@@ -149,15 +155,82 @@ void APaperCharacterParcial::MyStopJump()
 
 void APaperCharacterParcial::OnHit(bool instaKill) {
 	size--;
+
+	_speedScale = 0.5;
+
+	FTimerHandle timerHandle;
+
+	GetWorldTimerManager().SetTimer(timerHandle, this, &APaperCharacterParcial::ResetSpeed, slowEffectStartDelay, false, slowEffectLoopDelay);
+
 	if (size < 1 || instaKill)
 	{
 		UGameplayStatics::OpenLevel(GetWorld(), FName(*UGameplayStatics::GetCurrentLevelName(GetWorld())));
 	}
 }
 
-void APaperCharacterParcial::AddImpulseAfterKillingEnemy() {
-	LaunchCharacter(GetActorUpVector() * impulseAfterKillingEnemy, false, false);
+void APaperCharacterParcial::SizeUp() {
+	if (size <= maxSize)
+		size++;
+
+	if (GetCharacterMovement()->IsMovingOnGround() && speed == 0 && anim->GetFlipbook() == animIdle && size >= 2)
+	{
+		ChangeAnimation(IDLE_BIG);
+	}
 }
+
+
+void APaperCharacterParcial::AddImpulseAfterKillingEnemy(bool impulseSideWays) {
+	if (impulseSideWays)
+	{
+		float forceX = 0;
+		if (cameraXConstantPosOnLastLevel <= GetActorLocation().X)
+		{
+			forceX = -1;
+		}
+		else
+		{
+			forceX = 1;
+		}
+		LaunchCharacter(FVector(forceX  * impulseAfterKillingEnemy * 4, 0 , 1 * impulseAfterKillingEnemy), false, false);
+	}
+	else {
+		LaunchCharacter(GetActorUpVector() * impulseAfterKillingEnemy, false, false);
+	}
+}
+
+
+void APaperCharacterParcial::Shoot()
+{
+	if (size < 3)
+		return;
+
+	auto world = GetWorld();
+
+	if (_playerProjectilConstructed && world)
+	{
+		FActorSpawnParameters params;
+		params.Owner = this;
+		APlayerProjectile* projectile = world->SpawnActor<APlayerProjectile>(_playerProjectilConstructed, _fireSpawnPoint->GetComponentLocation(), anim -> GetComponentRotation(), params);
+		FVector direction = anim->GetComponentRotation().Vector() + GetActorUpVector() / 4;
+		projectile->SetImpulse(direction);
+
+		_canShoot = false;
+
+		FTimerHandle timerHandle;
+
+		GetWorldTimerManager().SetTimer(timerHandle, this, &APaperCharacterParcial::CanShootAgain, shootStartDelay, false, shootLoopDelay);
+	}
+}
+
+void APaperCharacterParcial::CanShootAgain(){
+	_canShoot = true;
+}
+
+void APaperCharacterParcial::ResetSpeed() {
+	_speedScale = 1.0;
+}
+
+
 
 
 

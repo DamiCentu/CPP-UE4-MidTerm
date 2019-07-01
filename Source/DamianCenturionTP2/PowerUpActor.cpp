@@ -37,14 +37,25 @@ void APowerUpActor::Tick(float DeltaTime)
 
 	_boxCollider->GetOverlappingActors(actors);
 
-	if(actors.Num() <= 0)
+	auto num = actors.Num();
+
+	for (int i = 0; i < actors.Num(); i++)
+	{
+		AActor* actor = actors[i];
+		if (actor && actor->IsA<APaper_SimpleBlock>())
+		{
+			num--;
+		}
+	}
+
+	if(num <= 0)
 		SetActorLocation(GetActorLocation() - GetActorUpVector()  * speedY * DeltaTime);
 
 }
 
 void APowerUpActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<AMushActor>()) {
+	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>()) {
 		return;
 	}
 
@@ -57,8 +68,7 @@ void APowerUpActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AAct
 		if (charP)
 		{
 			Destroy();
-			if(charP->size <= charP->maxSize)
-				charP->size++;
+			charP->SizeUp();
 		}
 	}
 

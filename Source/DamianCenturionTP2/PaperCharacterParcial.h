@@ -8,6 +8,8 @@
 #include "PaperCharacter.h"
 #include "ConstructorHelpers.h"
 #include "PaperFlipbookComponent.h"
+#include "PlayerProjectile.h"
+#include "TimerManager.h"
 #include "PaperCharacterParcial.generated.h"
 
 /**
@@ -58,6 +60,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		float cameraZpositionOffset;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		float cameraXConstantPosOnLastLevel = 865;
+
 	UPROPERTY(EditAnywhere)
 		float impulseAfterKillingEnemy = 200;
 
@@ -70,23 +75,49 @@ public:
 	UPROPERTY(EditAnywhere)
 		float capsuleComponentSizeOnSmall = 55;
 
-	void AddImpulseAfterKillingEnemy();
+	void AddImpulseAfterKillingEnemy(bool impulseSideWays = false);
 
 	UPROPERTY(EditAnywhere)
 		USoundWave* jumpClip;
+
+	UPROPERTY(EditAnywhere)
+		float shootLoopDelay = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+		float shootStartDelay = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+		float slowEffectLoopDelay = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+		float slowEffectStartDelay = 2.0f;
 	
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class APlayerProjectile> _playerProjectilConstructed;
+		
 	int size = 1;
 
 	virtual void OnHit(bool instaKill = false) override;
 
+	void SizeUp();
+
 private:
 	TMap<FString, UPaperFlipbook*> anims;
+
+	float _speedScale = 1.0;
+
+	bool _canShoot = true;
 
 	UCapsuleComponent * _capsuleCollider;
 
 	void SetHorizontal(float h);
 	void SetJump();
 	void MyStopJump();
+	void Shoot();
+	void CanShootAgain();
+	void ResetSpeed();
+
+	UChildActorComponent* _fireSpawnPoint;
 	
 
 	void AddFlipbook(FString name, UPaperFlipbook * object);

@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "GameFramework/Actor.h"
+#include "PaperCharacterParcial.h"
 #include "EndLevelTriggerActor.generated.h"
 
 UCLASS()

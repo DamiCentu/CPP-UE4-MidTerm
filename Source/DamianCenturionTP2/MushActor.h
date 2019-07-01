@@ -9,12 +9,13 @@
 #include "Paper2DClasses.h"
 #include "PaperSprite.h"
 #include "PaperCharacterParcial.h"
+#include "Paper_SimpleBlock.h"
 #include "MushActor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHitCheck, AActor*, actor);
 
 UCLASS()
-class DAMIANCENTURIONTP2_API AMushActor : public AActor
+class DAMIANCENTURIONTP2_API AMushActor : public AActor, public IOnHit
 {
 	GENERATED_BODY()
 	
@@ -32,6 +33,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		float speed = 500;
+
+
+	virtual void OnHit(bool instaKill = false) override;
 
 private:
 	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")

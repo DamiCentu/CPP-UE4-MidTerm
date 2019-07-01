@@ -45,6 +45,10 @@ void APaper_QuestionBlock::BeginPlay()
 }
 
 void APaper_QuestionBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	if (!OtherActor->IsA<APaperCharacterParcial>()) {
+		return;
+	}
+
 	amountOfHits--;
 
 	auto world = GetWorld();

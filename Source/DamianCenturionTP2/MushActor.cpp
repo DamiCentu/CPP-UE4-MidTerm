@@ -76,7 +76,7 @@ void AMushActor::OnTopBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 
 void AMushActor::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<AMushActor>()) {
+	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>()) {
 		return;
 	}
 	speed *= -1;
@@ -85,7 +85,7 @@ void AMushActor::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AAc
 
 void AMushActor::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<AMushActor>()) {
+	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>()) {
 		return;
 	}
 	speed *= -1;
@@ -99,4 +99,9 @@ void AMushActor::CheckIfCollideWithPlayer(AActor * other) {
 			Destroy();
 		}
 }
+
+void AMushActor::OnHit(bool instaKill) {
+	Destroy();
+}
+
 

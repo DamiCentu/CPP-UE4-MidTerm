@@ -7,6 +7,10 @@
 #include "ConstructorHelpers.h"
 #include "Paper2DClasses.h"
 #include "PaperSprite.h"
+#include "DestructibleComponent.h"
+#include "TimerManager.h"
+#include "PaperCharacterParcial.h"
+#include "MushActor.h"
 #include "Paper_SimpleBlock.generated.h"
 
 /**
@@ -25,13 +29,31 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere)
+		float radius = 50;
+	UPROPERTY(EditAnywhere)
+		float force = 50;
+	UPROPERTY(EditAnywhere)
+		float baseDamage = 50;
+
+	UPROPERTY(EditAnywhere)
+		float loopDelay = 0.0f;
+
+	UPROPERTY(EditAnywhere)
+		float startDelay = 2.0f;
+
 private:
 	UPaperSpriteComponent* _spriteComponent;	
 
-	//UDestructibleComponent* _destructiveComponent;
+	UDestructibleComponent* _destructiveComponent;
 	
 	UFUNCTION()
 		void OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
+
 	UBoxComponent * _boxCollider;
+
+	UBoxComponent * _topBoxCollider;
+
+	void DestroyObject();
 };

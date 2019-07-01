@@ -3,20 +3,18 @@
 #pragma once
 
 #include "Engine.h"
-#include "OnHit.h"
 #include "GameFramework/Actor.h"
-#include "TimerManager.h"
-#include "PaperCharacterParcial.h"
-#include "PlantEnemyActor.generated.h"
+#include "OnHit.h"
+#include "ParabolicProjectile.generated.h"
 
 UCLASS()
-class DAMIANCENTURIONTP2_API APlantEnemyActor : public AActor, public IOnHit
+class DAMIANCENTURIONTP2_API AParabolicProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	APlantEnemyActor();
+	AParabolicProjectile();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,32 +23,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(EditAnywhere)
-		AActor* posOne;
-
-	UPROPERTY(EditAnywhere)
-		AActor* posTwo;
+		float force = 200;
 	
-	UPROPERTY(EditAnywhere)
-		float loopDelay = 0.0f;
-
-	UPROPERTY(EditAnywhere)
-		float startDelay = 2.0f;
-
-	UPROPERTY(EditAnywhere)
-		float speed = 200.0f;
-
-
-	virtual void OnHit(bool instaKill = false) override;
+	void SetImpulse(FVector direction, int impulseMultiplier);
 
 private:
-	void Move();
-
-	AActor* _currentActor;
-
-	bool _canMove;
-
 	UBoxComponent * _boxCollider;
 
 	UFUNCTION()
