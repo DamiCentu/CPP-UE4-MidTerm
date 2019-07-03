@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<UUserWidget> hudWidget;
 
+	UPROPERTY(EditAnywhere)
+		int widgetIndex = 0;
+
 private:
 	UUserWidget* _widget;
 	

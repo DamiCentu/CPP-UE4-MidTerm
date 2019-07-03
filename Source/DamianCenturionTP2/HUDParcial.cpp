@@ -22,7 +22,7 @@ void AHUDParcial::BeginPlay()
 
 		if (_widget)
 		{
-			_widget->AddToViewport();
+			_widget->AddToViewport(widgetIndex);
 		}
 	}
 }
