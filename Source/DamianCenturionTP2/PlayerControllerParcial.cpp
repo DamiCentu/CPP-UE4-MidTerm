@@ -20,16 +20,22 @@ void APlayerControllerParcial::ShowMenu() {
 	if (menu && !menu->IsInViewport()) {
 		menu->AddToViewport();
 
-		bShowMouseCursor = true;
+		//bShowMouseCursor = true;
 	}
 
 }
 
 void APlayerControllerParcial::HideMenu() {
 	if (menu && menu->IsInViewport()) {
-		bShowMouseCursor = false;
+		//bShowMouseCursor = false;
 		menu->RemoveFromViewport();
 	}
+
+	
+}
+
+void APlayerControllerParcial::RestartGame() {
+	UGameplayStatics::OpenLevel(GetWorld(), "Menu");
 }
 
 

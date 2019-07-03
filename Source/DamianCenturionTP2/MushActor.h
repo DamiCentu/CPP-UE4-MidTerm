@@ -10,6 +10,7 @@
 #include "PaperSprite.h"
 #include "PaperCharacterParcial.h"
 #include "Paper_SimpleBlock.h"
+#include "PowerUpActor.h"
 #include "MushActor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHitCheck, AActor*, actor);

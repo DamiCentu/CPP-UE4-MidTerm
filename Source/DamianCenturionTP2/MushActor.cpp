@@ -76,7 +76,7 @@ void AMushActor::OnTopBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 
 void AMushActor::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>()) {
+	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>() || OtherActor->IsA<APowerUpActor>()) {
 		return;
 	}
 	speed *= -1;
@@ -85,7 +85,7 @@ void AMushActor::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AAc
 
 void AMushActor::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>()) {
+	if (OtherActor->IsA<AMushActor>() || OtherActor->IsA<APaper_SimpleBlock>()|| OtherActor->IsA<APowerUpActor>()) {
 		return;
 	}
 	speed *= -1;

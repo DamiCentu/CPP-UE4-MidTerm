@@ -101,9 +101,9 @@ void APaperCharacterParcial::Tick(float DeltaSeconds)
 void APaperCharacterParcial::SetupPlayerInputComponent(UInputComponent * PlayerInputComponent)
 {
 	PlayerInputComponent->BindAxis("Horizontal", this, &APaperCharacterParcial::SetHorizontal);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed ,this, &APaperCharacterParcial::SetJump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &APaperCharacterParcial::MyStopJump);
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APaperCharacterParcial::Shoot);
+	//PlayerInputComponent->BindAction("Jump", IE_Pressed ,this, &APaperCharacterParcial::SetJump);
+	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &APaperCharacterParcial::MyStopJump);
+	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APaperCharacterParcial::Shoot);
 }
 
 void APaperCharacterParcial::SetHorizontal(float h)
@@ -169,6 +169,10 @@ void APaperCharacterParcial::OnHit(bool instaKill) {
 }
 
 void APaperCharacterParcial::SizeUp() {
+	if (size == 1)
+	{
+		SetActorLocation(GetActorLocation() + GetActorUpVector() * offSetWhenGetsPowerUp);
+	}
 	if (size <= maxSize)
 		size++;
 

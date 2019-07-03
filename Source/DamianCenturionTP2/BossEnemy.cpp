@@ -217,7 +217,7 @@ void ABossEnemy::OnTopBoxHit(UPrimitiveComponent * HitComp, AActor * OtherActor,
 	//FTimerHandle timerHandle;
 	//GetWorldTimerManager().SetTimer(timerHandle, this, &ABossEnemy::ShootParabolic, chaseStartDelay, false, chaseLoopDelay);
 
-	UGameplayStatics::OpenLevel(GetWorld(), "Level1");
+	UGameplayStatics::OpenLevel(GetWorld(), "WinScreen");
 }
 
 void ABossEnemy::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)

@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/World.h"
 #include "PlayerControllerParcial.generated.h"
 
 /**
@@ -25,5 +26,8 @@ public:
 
 	void ShowMenu();
 	void HideMenu();
+
+	UFUNCTION(BlueprintCallable)
+		void RestartGame();
 	
 };

@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		UPaperSprite* usedBoxSprite;
 
+	UPROPERTY(EditAnywhere)
+		APaperCharacterParcial* character;
+
 private:
 
 	UAudioComponent* audioComp;

@@ -60,6 +60,13 @@ void APaper_QuestionBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherA
 		auto coin = world->SpawnActor<ACoin>(coinPrefab, this->GetTransform(), params);
 		coin->SetCoinAfterHitted();
 
+		APaperCharacterParcial* charac = Cast<APaperCharacterParcial>(UGameplayStatics::GetPlayerCharacter(world, 0));
+
+		if (charac)
+		{
+			charac->coins++;
+		}
+
 		if (audioComp && coinClip)
 		{
 			audioComp->Sound = coinClip;

@@ -91,6 +91,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		float slowEffectStartDelay = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+		float offSetWhenGetsPowerUp = 30.0f;
 	
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class APlayerProjectile> _playerProjectilConstructed;
@@ -101,6 +104,18 @@ public:
 
 	void SizeUp();
 
+	UFUNCTION(BlueprintCallable)
+		void SetJump();
+
+	UFUNCTION(BlueprintCallable)
+		void MyStopJump();
+
+	UFUNCTION(BlueprintCallable)
+		void Shoot();
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+		int coins = 0;
+
 private:
 	TMap<FString, UPaperFlipbook*> anims;
 
@@ -110,12 +125,9 @@ private:
 
 	UCapsuleComponent * _capsuleCollider;
 
-	void SetHorizontal(float h);
-	void SetJump();
-	void MyStopJump();
-	void Shoot();
 	void CanShootAgain();
 	void ResetSpeed();
+	void SetHorizontal(float h);
 
 	UChildActorComponent* _fireSpawnPoint;
 	
