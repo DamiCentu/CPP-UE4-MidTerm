@@ -35,17 +35,23 @@ protected:
 		void OnRightBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-		void CheckIfCollideWithPlayer(AActor * other);
+		virtual void HitActor(AActor * other);
 
 	virtual bool ShouldChangeDirection(AActor * OtherActor);
 
-	virtual void ChangeDirection(AActor * OtherActor);
+	virtual void ChangeDirection();
+
+	virtual void OnSideTriggers(AActor * OtherActor);
+
+	virtual void OnTopTrigger(AActor * OtherActor);
 
 	UBoxComponent * leftBoxCollider;
 
 	UBoxComponent * rightBoxCollider;
 
 	UBoxComponent * topBoxCollider;
+
+	float _movementSpeed = 0;
 
 public:	
 	// Called every frame

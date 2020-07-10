@@ -3,6 +3,8 @@
 #pragma once
 
 #include "BaseMovaebleEnemy.h"
+#include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 #include "TurtleActor.generated.h"
 
 UCLASS()
@@ -14,14 +16,40 @@ public:
 	// Sets default values for this actor's properties
 	ATurtleActor();
 
+	UPROPERTY(EditAnywhere)
+		UPaperFlipbook* animDying;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void ChangeDirection() override;
+
+	virtual void OnSideTriggers(AActor * OtherActor) override;
+
+	virtual void OnTopTrigger(AActor * OtherActor) override;
+
+	virtual void HitActor(AActor * other) override;
+
+    UPaperFlipbookComponent * _flipBook;
+
+	UPaperFlipbook* _animWalking;
 
 	
-	
+
+public:	
+	// Called every frame
+	UPROPERTY(EditAnywhere)
+		float speedSliding = 500;
+
+	virtual void Tick(float DeltaTime) override;	
+
+private:
+	void ChangeAnimation(UPaperFlipbook* flipbook);
+	void ResetHit();
+	void ResetPlayRateAnimation();
+
+	bool _hitted = false;
+	bool _sliding = false;
+
 };

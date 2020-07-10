@@ -51,8 +51,9 @@ void ABaseMovaebleEnemy::BeginPlay()
 	if (rightBoxCollider)
 		rightBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseMovaebleEnemy::OnRightBoxBeginOverlap);
 
-	_onTriggerAction.AddDynamic(this, &ABaseMovaebleEnemy::CheckIfCollideWithPlayer);
+	_onTriggerAction.AddDynamic(this, &ABaseMovaebleEnemy::HitActor);
 	
+	_movementSpeed = speed;
 }
 
 // Called every frame
@@ -60,10 +61,25 @@ void ABaseMovaebleEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	SetActorLocation(GetActorLocation() + GetActorForwardVector() * speed * DeltaTime);
+	SetActorLocation(GetActorLocation() + GetActorForwardVector() * _movementSpeed * DeltaTime);
 }
 
 void ABaseMovaebleEnemy::OnTopBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	OnTopTrigger(OtherActor);
+}
+
+void ABaseMovaebleEnemy::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	OnSideTriggers(OtherActor);
+}
+
+void ABaseMovaebleEnemy::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	OnSideTriggers(OtherActor);
+}
+
+void ABaseMovaebleEnemy::OnTopTrigger(AActor * OtherActor)
+{
 	if (topBoxCollider)
 		topBoxCollider->OnComponentHit.RemoveAll(this);
 
@@ -76,23 +92,17 @@ void ABaseMovaebleEnemy::OnTopBoxHit(UPrimitiveComponent* HitComp, AActor* Other
 	Destroy();
 }
 
-void ABaseMovaebleEnemy::OnLeftBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void ABaseMovaebleEnemy::OnSideTriggers(AActor * OtherActor)
 {
 	if (!ShouldChangeDirection(OtherActor))
 		return;
 
-	ChangeDirection(OtherActor);
+	ChangeDirection();
+
+	_onTriggerAction.Broadcast(OtherActor);
 }
 
-void ABaseMovaebleEnemy::OnRightBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
-{
-	if (!ShouldChangeDirection(OtherActor))
-		return;
-
-	ChangeDirection(OtherActor);
-}
-
-void ABaseMovaebleEnemy::CheckIfCollideWithPlayer(AActor * other) {
+void ABaseMovaebleEnemy::HitActor(AActor * other) {
 	IOnHit * hitActor = Cast<IOnHit>(other);
 	if (hitActor) {
 		hitActor->OnHit();
@@ -112,8 +122,7 @@ bool ABaseMovaebleEnemy::ShouldChangeDirection(AActor * OtherActor) //child clas
 	return true;
 }
 
-void ABaseMovaebleEnemy::ChangeDirection(AActor * OtherActor) {
-	speed *= -1;
-	_onTriggerAction.Broadcast(OtherActor);
+void ABaseMovaebleEnemy::ChangeDirection() {
+	_movementSpeed *= -1;
 }
 
