@@ -2,12 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "BaseMovaebleEnemy.h"
 #include "TurtleActor.generated.h"
 
 UCLASS()
-class DAMIANCENTURIONTP2_API ATurtleActor : public AActor
+class DAMIANCENTURIONTP2_API ATurtleActor : public ABaseMovaebleEnemy
 {
 	GENERATED_BODY()
 	

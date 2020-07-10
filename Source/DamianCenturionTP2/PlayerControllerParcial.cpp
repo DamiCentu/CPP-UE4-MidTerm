@@ -11,6 +11,10 @@ void APlayerControllerParcial::BeginPlay()
 		menu = CreateWidget<UUserWidget>(this, widgetMenu);
 
 	ShowMenu();
+
+	bShowMouseCursor = true;
+	bEnableClickEvents = true;
+	bEnableMouseOverEvents = true;
 }
 
 void APlayerControllerParcial::ShowMenu() {
@@ -22,6 +26,10 @@ void APlayerControllerParcial::ShowMenu() {
 
 		//bShowMouseCursor = true;
 	}
+
+	bShowMouseCursor = true;
+	bEnableClickEvents = true;
+	bEnableMouseOverEvents = true;
 
 }
 
