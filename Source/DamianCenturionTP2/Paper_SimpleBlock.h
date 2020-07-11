@@ -30,6 +30,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
+		class ATriggerVolume * trigger;
+
+	UPROPERTY(EditAnywhere)
 		float radius = 50;
 	UPROPERTY(EditAnywhere)
 		float force = 50;

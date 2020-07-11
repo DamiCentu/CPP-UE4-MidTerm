@@ -42,6 +42,18 @@ public:
 	UPROPERTY(EditAnywhere)
 		float speedSliding = 500;
 
+	UPROPERTY(EditAnywhere)
+		float timerInRateResetHit = 0.01;
+
+	UPROPERTY(EditAnywhere)
+		float timerInRateResetAnimation= 0.01;
+
+	UPROPERTY(EditAnywhere)
+		float timerInFirstDelayResetHit = 7;
+
+	UPROPERTY(EditAnywhere)
+		float timerInFirstDelayResetAnimation = 3.5f;
+
 	virtual void Tick(float DeltaTime) override;	
 
 private:

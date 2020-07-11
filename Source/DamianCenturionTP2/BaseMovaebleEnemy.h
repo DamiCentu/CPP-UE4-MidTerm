@@ -44,12 +44,16 @@ protected:
 	virtual void OnSideTriggers(AActor * OtherActor);
 
 	virtual void OnTopTrigger(AActor * OtherActor);
+	
+	void CheckFall(float DeltaTime);
 
 	UBoxComponent * leftBoxCollider;
 
 	UBoxComponent * rightBoxCollider;
 
-	UBoxComponent * topBoxCollider;
+	UBoxComponent * topBoxCollider; 
+		
+	UBoxComponent * bottomBoxCollider;
 
 	float _movementSpeed = 0;
 
@@ -59,6 +63,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		float speed = 500;
+
+	UPROPERTY(EditAnywhere)
+		float speedY = 400;
+
+	UPROPERTY(EditAnywhere)
+		float minLevel1Z = -1722;
 
 	virtual void OnHit(bool instaKill = false) override;
 	

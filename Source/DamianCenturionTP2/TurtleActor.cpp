@@ -66,6 +66,7 @@ void ATurtleActor::OnTopTrigger(AActor * OtherActor)
 	{
 		_sliding = true;
 		_movementSpeed = speedSliding;
+		_flipBook->SetPlayRate(0);
 	}
 
 	if (!_hitted)
@@ -80,9 +81,9 @@ void ATurtleActor::OnTopTrigger(AActor * OtherActor)
 
 		FTimerHandle timerHandle2;
 
-		GetWorldTimerManager().SetTimer(timerHandle2, this, &ATurtleActor::ResetPlayRateAnimation, 0, false, 3.5f);
+		GetWorldTimerManager().SetTimer(timerHandle2, this, &ATurtleActor::ResetPlayRateAnimation, timerInRateResetAnimation, false, timerInFirstDelayResetAnimation);
 
-		GetWorldTimerManager().SetTimer(timerHandle, this, &ATurtleActor::ResetHit, 0, false, 7);
+		GetWorldTimerManager().SetTimer(timerHandle, this, &ATurtleActor::ResetHit, timerInRateResetHit, false, timerInFirstDelayResetHit);
 		_movementSpeed = 0;
 	}
 }

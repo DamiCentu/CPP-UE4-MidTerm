@@ -4,6 +4,7 @@
 #include "PaperCharacterParcial.h"
 #include "Paper_SimpleBlock.h"
 #include "PowerUpActor.h"
+#include "Engine/World.h"
 
 // Sets default values
 ABaseMovaebleEnemy::ABaseMovaebleEnemy()
@@ -40,6 +41,10 @@ void ABaseMovaebleEnemy::BeginPlay()
 		{
 			topBoxCollider = box;
 		}
+		else if (box->GetName() == "BottomBox")
+		{
+			bottomBoxCollider = box;
+		}
 	}
 
 	if (leftBoxCollider)
@@ -50,6 +55,9 @@ void ABaseMovaebleEnemy::BeginPlay()
 
 	if (rightBoxCollider)
 		rightBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseMovaebleEnemy::OnRightBoxBeginOverlap);
+
+// 	if (bottomBoxCollider)
+// 		bottomBoxCollider->OnComponent .AddDynamic(this, &ABaseMovaebleEnemy::OnRightBoxBeginOverlap);
 
 	_onTriggerAction.AddDynamic(this, &ABaseMovaebleEnemy::HitActor);
 	
@@ -62,6 +70,41 @@ void ABaseMovaebleEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SetActorLocation(GetActorLocation() + GetActorForwardVector() * _movementSpeed * DeltaTime);
+
+	CheckFall(DeltaTime);
+}
+
+void ABaseMovaebleEnemy::CheckFall(float DeltaTime) {
+	TArray<AActor*> actors;
+
+	bottomBoxCollider->GetOverlappingActors(actors);
+
+	auto num = actors.Num();
+
+	for (int i = 0; i < actors.Num(); i++)
+	{
+		AActor* actor = actors[i];
+		if (actor && actor->IsA<APaper_SimpleBlock>())
+		{
+			num--;
+		}
+	}
+
+	if (num <= 0)
+	{
+		SetActorLocation(GetActorLocation() - GetActorUpVector()  * speedY * DeltaTime);
+
+		if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Level1")
+		{
+			if (GetActorLocation().Z < -1722)
+				SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, minLevel1Z));
+		}
+		else if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Level2-2")
+		{
+			if (GetActorLocation().Z < -1722)
+				SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, minLevel1Z));
+		}
+	}
 }
 
 void ABaseMovaebleEnemy::OnTopBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "boundActor.h"
+#include "OnHit.h"
 
 
 // Sets default values
@@ -30,10 +31,9 @@ void AboundActor::Tick(float DeltaTime)
 
 void AboundActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<APaperCharacterParcial>()) {
-		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
-		if (charP)
-			charP->OnHit(true);
+	IOnHit * hitActor = Cast<IOnHit>(OtherActor);
+	if (hitActor) {
+		hitActor->OnHit(true);
 	}
 }
 

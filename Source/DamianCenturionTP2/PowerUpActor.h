@@ -4,12 +4,6 @@
 
 #include "Engine.h"
 #include "GameFramework/Actor.h"
-#include "ConstructorHelpers.h"
-#include "Paper2DClasses.h"
-#include "PaperSprite.h"
-#include "PaperCharacterParcial.h"
-#include "MushActor.h"
-#include "Paper_SimpleBlock.h"
 #include "PowerUpActor.generated.h"
 
 UCLASS()

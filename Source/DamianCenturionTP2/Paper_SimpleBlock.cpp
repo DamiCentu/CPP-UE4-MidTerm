@@ -2,7 +2,6 @@
 
 #include "Paper_SimpleBlock.h"
 
-
 APaper_SimpleBlock::APaper_SimpleBlock()
 {
 	_spriteComponent = GetRenderComponent();
@@ -52,32 +51,6 @@ void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 		return;
 	}
 
-	//FHitResult hitResult;
-	//FCollisionQueryParams queryParams = FCollisionQueryParams(
-	//	FName(TEXT("")), //Esto es si lo quiero separar con un tag específico
-	//	false, //Esto es si quiero obtener colisiones complejas
-	//	this //Si quiero ignorar un actor en específico
-	//);
-
-	//GetWorld()->LineTraceSingleByObjectType(
-	//	hitResult, //Donde saca el resultado
-	//	GetActorLocation(), //De donde sale
-	//	GetActorUpVector(), //A donde va
-	//	FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldDynamic),
-	//	queryParams
-	//);
-
-	//AActor* hitActor = hitResult.GetActor();
-
-	//if (hitActor)
-	//{
-	//	AMushActor * mush = Cast<AMushActor>(hitActor);
-	//	if (mush)
-	//	{
-	//		mush->OnHit();
-	//	}
-	//}
-
 	TArray<AActor*> actors;
 
 	_topBoxCollider->GetOverlappingActors(actors);
@@ -110,5 +83,7 @@ void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 }
 
 void APaper_SimpleBlock::DestroyObject() {
+	if (trigger)
+		trigger->Destroy();
 	Destroy();
 }

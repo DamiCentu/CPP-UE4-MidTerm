@@ -4,7 +4,6 @@
 
 #include "Engine.h"
 #include "GameFramework/Actor.h"
-#include "PaperCharacterParcial.h"
 #include "boundActor.generated.h"
 
 UCLASS()
