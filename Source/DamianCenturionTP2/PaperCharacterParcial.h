@@ -75,7 +75,12 @@ public:
 	UPROPERTY(EditAnywhere)
 		float capsuleComponentSizeOnSmall = 55;
 
+	UPROPERTY(EditAnywhere)
+		float freezeTime = 2.5;
+
 	void AddImpulseAfterKillingEnemy(bool impulseSideWays = false);
+
+	void FreezePlayer();
 
 	UPROPERTY(EditAnywhere)
 		USoundWave* jumpClip;
@@ -123,10 +128,13 @@ private:
 
 	bool _canShoot = true;
 
+	bool _playerFrozen = false;
+
 	UCapsuleComponent * _capsuleCollider;
 
 	void CanShootAgain();
 	void ResetSpeed();
+	void ResetFreeze();
 	void SetHorizontal(float h);
 
 	UChildActorComponent* _fireSpawnPoint;

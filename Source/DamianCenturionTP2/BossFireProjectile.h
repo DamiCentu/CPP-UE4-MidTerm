@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "GameFramework/Actor.h"
 #include "OnHit.h"
+#include "PaperFlipbookComponent.h"
 #include "BossFireProjectile.generated.h"
 
 UCLASS()
@@ -27,8 +28,16 @@ public:
 	UPROPERTY(EditAnywhere)
 		float speed = 200;
 
+	UPROPERTY(EditAnywhere)
+		UPaperFlipbook * bullet;
+
 private:
 	UBoxComponent * _boxCollider;
+
+
+	UPaperFlipbookComponent * _flipBook;
+
+	void ChangeAnimation(UPaperFlipbook* flipbook);
 
 	UFUNCTION()
 		void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BossFireProjectile.h"
+#include "CanonActor.h"
 
 
 // Sets default values
@@ -16,11 +17,26 @@ void ABossFireProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	_flipBook = FindComponentByClass <UPaperFlipbookComponent>();
+
+	if (GetOwner() && GetOwner()->IsA<ACanonActor>() && bullet)
+	{
+		ChangeAnimation(bullet);
+		speed *= 2;
+	}
+
 	_boxCollider = FindComponentByClass < UBoxComponent>();
 
 	if (_boxCollider) {
 		_boxCollider->OnComponentBeginOverlap.AddDynamic(this, &ABossFireProjectile::OnBoxBeginOverlap);
 	}
+}
+
+void ABossFireProjectile::ChangeAnimation(UPaperFlipbook* flipbook)
+{
+	_flipBook->SetRelativeScale3D(FVector(1, 1, 1));
+	_flipBook->SetFlipbook(flipbook);
+	_flipBook->SetRelativeScale3D(FVector(6, 1, 6));
 }
 
 // Called every frame
@@ -33,6 +49,9 @@ void ABossFireProjectile::Tick(float DeltaTime)
 
 void ABossFireProjectile::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	if (OtherActor->IsA<ATriggerVolume>())
+		return;
+
 	IOnHit * hitActor = Cast<IOnHit>(OtherActor);
 	if (hitActor) {
 		hitActor->OnHit();
