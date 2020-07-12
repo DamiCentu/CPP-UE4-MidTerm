@@ -4,6 +4,7 @@
 #include "PaperCharacterParcial.h"
 #include "Paper_SimpleBlock.h"
 #include "PowerUpActor.h"
+#include "Coin.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -159,7 +160,7 @@ void ABaseMovaebleEnemy::OnHit(bool instaKill) {
 
 bool ABaseMovaebleEnemy::ShouldChangeDirection(AActor * OtherActor) //child class must override
 {
-	if (OtherActor->IsA<ABaseMovaebleEnemy>() || OtherActor->IsA<APaper_SimpleBlock>() || OtherActor->IsA<APowerUpActor>())
+	if (OtherActor->IsA<ABaseMovaebleEnemy>() || OtherActor->IsA<APaper_SimpleBlock>() || OtherActor->IsA<APowerUpActor>() || OtherActor->IsA<ACoin>())
 		return false;
 
 	return true;

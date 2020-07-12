@@ -37,5 +37,23 @@ public:
 	
 private:
 	bool _canMove = false;
-	void CallDestroy();
+	
+	UFUNCTION()
+		void CallDestroy();
+
+	UFUNCTION()
+		void DisableObject();
+
+	UBoxComponent* _boxCollider;
+
+	UFUNCTION()
+		void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UAudioComponent* audioComp;
+
+	USoundWave* coinClip;
+
+	class UPaperSpriteComponent* _sprite;
+
+	bool _collected = false;
 };

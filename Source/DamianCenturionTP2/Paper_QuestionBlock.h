@@ -8,7 +8,6 @@
 #include "Paper2DClasses.h"
 #include "PaperSprite.h"
 #include "Coin.h"
-#include "PaperCharacterParcial.h"
 #include "Engine/World.h"
 #include "Paper_QuestionBlock.generated.h"
 
@@ -44,14 +43,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		UPaperSprite* usedBoxSprite;
 
-	UPROPERTY(EditAnywhere)
-		APaperCharacterParcial* character;
-
 private:
-
-	UAudioComponent* audioComp;
-
-	USoundWave* coinClip;
 
 	TSubclassOf<class ACoin> coinPrefab;	
 };
