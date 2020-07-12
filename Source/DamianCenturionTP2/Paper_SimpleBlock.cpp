@@ -1,6 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Paper_SimpleBlock.h"
+#include "ConstructorHelpers.h"
+#include "BaseMovaebleEnemy.h"
+#include "PowerUpActor.h"
+#include "Engine/World.h"
 
 APaper_SimpleBlock::APaper_SimpleBlock()
 {
@@ -10,6 +14,18 @@ APaper_SimpleBlock::APaper_SimpleBlock()
 	
 	if (_spriteComponent && sprite.Object)
 		_spriteComponent->SetSprite(sprite.Object);
+
+#if WITH_EDITOR
+	auto powerUp = ConstructorHelpers::FObjectFinder<UBlueprint>(TEXT("Blueprint'/Game/MyContent/Blueprints/BP_PowerUpActor.BP_PowerUpActor'")); 
+	if (powerUp.Object)
+		_powerUpConstructed = powerUp.Object->GeneratedClass;
+#endif
+
+#if !WITH_EDITOR
+	auto powerUp2 = ConstructorHelpers::FObjectFinder<UClass>(TEXT("Class'/Game/MyContent/Blueprints/BP_PowerUpActor.BP_PowerUpActor_C'"));
+	if (powerUp2.Object)
+		_powerUpConstructed = powerUp2.Object;
+#endif
 
 }
 
@@ -44,10 +60,33 @@ void APaper_SimpleBlock::BeginPlay()
 
 	if (_boxCollider)
 		_boxCollider->OnComponentHit.AddDynamic(this, &APaper_SimpleBlock::OnBoxHit);
+
+	_spawnPoint = Cast<UChildActorComponent>(GetComponentByClass(UChildActorComponent::StaticClass()));
 }
 
 void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
 	if (!OtherActor->IsA<APaperCharacterParcial>()) {
+		return;
+	}
+
+	if (spawnPowerUp != "none")
+	{
+		auto world = GetWorld();
+
+		if (_powerUpConstructed && world)
+		{
+			FActorSpawnParameters params;
+			params.Owner = this;
+			world->SpawnActor<APowerUpActor>(_powerUpConstructed, _spawnPoint->GetComponentLocation(), _spawnPoint->GetComponentRotation(), params);
+		}
+		
+		if (_boxCollider)
+			_boxCollider->OnComponentHit.RemoveAll(this);
+
+		_spriteComponent->SetMobility(EComponentMobility::Stationary);
+		_spriteComponent->SetSprite(usedBoxSprite);
+		_spriteComponent->SetMobility(EComponentMobility::Movable);
+
 		return;
 	}
 
@@ -60,10 +99,10 @@ void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 		AActor* actor = actors[i];
 		if (actor)
 		{
-			AMushActor* mush = Cast<AMushActor>(actor);
-			if (mush)
+			ABaseMovaebleEnemy* enemy = Cast<ABaseMovaebleEnemy>(actor);
+			if (enemy)
 			{
-				mush->OnHit();
+				enemy->OnHit();
 			}
 		}
 	}

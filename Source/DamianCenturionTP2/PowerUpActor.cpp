@@ -25,10 +25,7 @@ void APowerUpActor::BeginPlay()
 
 	if (_boxCollider) {
 		_boxCollider->OnComponentBeginOverlap.AddDynamic(this, &APowerUpActor::OnBoxBeginOverlap);
-		//_boxCollider->OnComponentEndOverlap.AddDynamic(this, &APowerUpActor::OnBoxEndOverlap);
-
 	}
-	
 }
 
 // Called every frame
@@ -66,8 +63,6 @@ void APowerUpActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AAct
 
 	speed *= -1;
 
-	//_isOverlapping = true;
-
 	if (OtherActor->IsA<APaperCharacterParcial>()) {
 		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
 		if (charP)
@@ -78,8 +73,4 @@ void APowerUpActor::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AAct
 	}
 
 }
-
-//void APowerUpActor::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
-//	_isOverlapping = false;
-//}
 

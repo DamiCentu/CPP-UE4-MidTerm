@@ -43,7 +43,12 @@ public:
 	UPROPERTY(EditAnywhere)
 		UPaperSprite* usedBoxSprite;
 
+	UPROPERTY(EditAnywhere)
+		FString spawnPowerUp = "none";
+
 private:
 
-	TSubclassOf<class ACoin> coinPrefab;	
+	UChildActorComponent* _spawnPoint;
+	TSubclassOf<class ACoin> coinPrefab;
+	TSubclassOf<class APowerUpActor> _powerUpConstructed;
 };

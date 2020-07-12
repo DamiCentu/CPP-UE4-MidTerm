@@ -4,13 +4,11 @@
 
 #include "Engine.h"
 #include "PaperSpriteActor.h"
-#include "ConstructorHelpers.h"
 #include "Paper2DClasses.h"
 #include "PaperSprite.h"
 #include "DestructibleComponent.h"
 #include "TimerManager.h"
 #include "PaperCharacterParcial.h"
-#include "MushActor.h"
 #include "Paper_SimpleBlock.generated.h"
 
 /**
@@ -45,6 +43,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 		float startDelay = 2.0f;
 
+	UPROPERTY(EditAnywhere)
+		FString spawnPowerUp = "none";
+
+	UPROPERTY(EditAnywhere)
+		UPaperSprite* usedBoxSprite;
+
 private:
 	UPaperSpriteComponent* _spriteComponent;	
 
@@ -59,4 +63,8 @@ private:
 	UBoxComponent * _topBoxCollider;
 
 	void DestroyObject();
+
+	TSubclassOf<class APowerUpActor> _powerUpConstructed;
+
+	UChildActorComponent* _spawnPoint;
 };
