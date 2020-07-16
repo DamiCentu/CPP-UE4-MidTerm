@@ -86,6 +86,9 @@ public:
 		USoundWave* jumpClip;
 
 	UPROPERTY(EditAnywhere)
+		USoundWave* powerUpClip;
+
+	UPROPERTY(EditAnywhere)
 		float shootLoopDelay = 2.0f;
 
 	UPROPERTY(EditAnywhere)

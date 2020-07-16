@@ -9,8 +9,11 @@ void UUserWidgetParcial::ClickButtonForLoadLevel() {
 		return;
 
 	UGameInstanceFinal* gameInstance = Cast<UGameInstanceFinal>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if(gameInstance)
+	if (gameInstance)
+	{
 		gameInstance->lives = 5;
+		gameInstance->playerSize = 1;
+	}
 
 	controller->HideMenu();
 	UGameplayStatics::OpenLevel(GetWorld(), "Level1");

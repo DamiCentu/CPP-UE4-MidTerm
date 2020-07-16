@@ -151,7 +151,7 @@ void APaperCharacterParcial::SetJump()
 	if (GetCharacterMovement()->IsMovingOnGround()) {		
 		bPressedJump = true;
 
-		if (audioComp)
+		if (audioComp && !audioComp->IsPlaying() && jumpClip)
 		{
 			audioComp->Sound = jumpClip;
 			audioComp->Play();
@@ -205,7 +205,14 @@ void APaperCharacterParcial::SizeUp() {
 		SetActorLocation(GetActorLocation() + GetActorUpVector() * offSetWhenGetsPowerUp);
 	}
 	if (size <= maxSize)
+	{
 		size++;
+		if (audioComp && powerUpClip)
+		{
+			audioComp->Sound = powerUpClip;
+			audioComp->Play();
+		}
+	}
 
 	UGameInstanceFinal* gameInstance = Cast<UGameInstanceFinal>(UGameplayStatics::GetGameInstance(GetWorld()));
 

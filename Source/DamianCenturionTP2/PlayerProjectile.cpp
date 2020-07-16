@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PlayerProjectile.h"
+#include "PaperCharacterParcial.h"
 
 
 // Sets default values
@@ -41,14 +42,13 @@ void APlayerProjectile::SetImpulse(FVector direction) {
 
 void APlayerProjectile::OnBoxBeginOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	if (OtherActor->IsA<APaperCharacterParcial>())
+	if (OtherActor->IsA<APaperCharacterParcial>() || OtherActor->IsA<ATriggerVolume>())
 		return;
 
 	IOnHit * hitActor = Cast<IOnHit>(OtherActor);
 	if (hitActor) {
 		hitActor->OnHit();
 	}
-
 	Destroy();
 }
 
