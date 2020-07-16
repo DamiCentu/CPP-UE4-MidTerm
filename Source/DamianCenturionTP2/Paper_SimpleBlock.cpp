@@ -33,6 +33,7 @@ void APaper_SimpleBlock::BeginPlay()
 {
 	_boxCollider = FindComponentByClass<UBoxComponent>();
 	_destructiveComponent = FindComponentByClass<UDestructibleComponent>();
+	audioComp = FindComponentByClass<UAudioComponent>();
 
 	TArray<UBoxComponent*> boxes;
 	GetComponents<UBoxComponent>(boxes);
@@ -60,14 +61,37 @@ void APaper_SimpleBlock::BeginPlay()
 
 	if (_boxCollider)
 		_boxCollider->OnComponentHit.AddDynamic(this, &APaper_SimpleBlock::OnBoxHit);
+	
+	if (isInvisible && _topBoxCollider) {
+		_topBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &APaper_SimpleBlock::OnBoxBeginOverlap);
+		_topBoxCollider->OnComponentEndOverlap.AddDynamic(this, &APaper_SimpleBlock::OnBoxEndOverlap);
+	}
 
 	_spawnPoint = Cast<UChildActorComponent>(GetComponentByClass(UChildActorComponent::StaticClass()));
+}
+
+FVector pos;
+void APaper_SimpleBlock::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if (_boxCollider) {
+		pos = _boxCollider->GetComponentLocation();
+		_boxCollider->SetWorldLocation(FVector(pos.X, pos.Y, 1000000));
+	}
+}
+
+void APaper_SimpleBlock::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
+	if (_boxCollider) {
+		_boxCollider->SetWorldLocation(pos);
+	}
 }
 
 void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
 	if (!OtherActor->IsA<APaperCharacterParcial>()) {
 		return;
 	}
+
+	TArray<AActor*> actors;
+
+	_topBoxCollider->GetOverlappingActors(actors);
 
 	if (spawnPowerUp != "none")
 	{
@@ -90,9 +114,10 @@ void APaper_SimpleBlock::OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 		return;
 	}
 
-	TArray<AActor*> actors;
-
-	_topBoxCollider->GetOverlappingActors(actors);
+	if (audioComp)
+	{
+		audioComp->Play();
+	}
 
 	for (int i = 0; i < actors.Num(); i++)
 	{

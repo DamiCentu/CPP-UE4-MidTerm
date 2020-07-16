@@ -49,10 +49,15 @@ protected:
 	UPROPERTY(EditAnywhere)
 		UPaperSprite* usedBoxSprite;
 
+	UPROPERTY(EditAnywhere)
+		bool isInvisible = false;
+
 private:
 	UPaperSpriteComponent* _spriteComponent;	
 
 	UDestructibleComponent* _destructiveComponent;
+
+	UAudioComponent* audioComp;
 	
 	UFUNCTION()
 		void OnBoxHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -67,4 +72,10 @@ private:
 	TSubclassOf<class APowerUpActor> _powerUpConstructed;
 
 	UChildActorComponent* _spawnPoint;
+
+	UFUNCTION()
+		void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void OnBoxEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

@@ -31,8 +31,6 @@ protected:
 
 	virtual void HitActor(AActor * other) override;
 
-    UPaperFlipbookComponent * _flipBook;
-
 	UPaperFlipbook* _animWalking;
 
 	

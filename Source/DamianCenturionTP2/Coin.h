@@ -4,7 +4,6 @@
 
 #include "Engine.h"
 #include "GameFramework/Actor.h"
-#include "TimerManager.h"
 #include "Coin.generated.h"
 
 UCLASS()

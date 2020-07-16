@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "OnHit.h"
+#include "PaperFlipbookComponent.h"
 #include "GameFramework/Actor.h"
 #include "BaseMovaebleEnemy.generated.h"
 
@@ -44,6 +45,10 @@ protected:
 	virtual void OnSideTriggers(AActor * OtherActor);
 
 	virtual void OnTopTrigger(AActor * OtherActor);
+
+	virtual void DisableObject();
+
+	virtual void CallDestroy();
 	
 	void CheckFall(float DeltaTime);
 
@@ -56,6 +61,10 @@ protected:
 	UBoxComponent * bottomBoxCollider;
 
 	float _movementSpeed = 0;
+
+	UAudioComponent* audioComp;
+
+	UPaperFlipbookComponent * _flipBook;
 
 public:	
 	// Called every frame

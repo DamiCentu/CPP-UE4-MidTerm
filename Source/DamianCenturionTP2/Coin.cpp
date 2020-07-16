@@ -4,6 +4,7 @@
 #include "ConstructorHelpers.h"
 #include "PaperCharacterParcial.h"
 #include "PaperSpriteComponent.h"
+#include "TimerManager.h"
 
 
 // Sets default values

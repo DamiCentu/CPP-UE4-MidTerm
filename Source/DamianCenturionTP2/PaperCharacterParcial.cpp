@@ -2,9 +2,14 @@
 
 #include "PaperCharacterParcial.h"
 #include "PaperFlipbook.h"
+#include "GameInstanceFinal.h"
 
 void APaperCharacterParcial::BeginPlay()
 {
+	UGameInstanceFinal* gameInstance = Cast<UGameInstanceFinal>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (gameInstance)
+		size = gameInstance->playerSize;
+	
 	PrimaryActorTick.bCanEverTick = true;
 	Super::BeginPlay();
 
@@ -48,9 +53,7 @@ void APaperCharacterParcial::ChangeAnimation(FString name)
 {
 	if (anims.Contains(name))
 	{
-		anim->SetRelativeScale3D(FVector(1, 1, 1));
 		anim->SetFlipbook(anims[name]);
-		anim->SetRelativeScale3D(FVector(6, 1, 6));
 	}
 }
 
@@ -169,7 +172,11 @@ void APaperCharacterParcial::MyStopJump()
 }
 
 void APaperCharacterParcial::OnHit(bool instaKill) {
+	UGameInstanceFinal* gameInstance = Cast<UGameInstanceFinal>(UGameplayStatics::GetGameInstance(GetWorld()));
 	size--;
+
+	if (gameInstance && size >= 1)
+		gameInstance->playerSize = size;
 
 	_speedScale = 0.5;
 
@@ -179,7 +186,16 @@ void APaperCharacterParcial::OnHit(bool instaKill) {
 
 	if (size < 1 || instaKill)
 	{
-		UGameplayStatics::OpenLevel(GetWorld(), FName(*UGameplayStatics::GetCurrentLevelName(GetWorld())));
+		if (gameInstance)
+		{
+			gameInstance->lives--;
+			gameInstance->playerSize = 1;
+		}
+
+		if(gameInstance && gameInstance->lives < 1)
+			UGameplayStatics::OpenLevel(GetWorld(), "LoseScreen");
+		else
+			UGameplayStatics::OpenLevel(GetWorld(), FName(*UGameplayStatics::GetCurrentLevelName(GetWorld())));
 	}
 }
 
@@ -190,6 +206,11 @@ void APaperCharacterParcial::SizeUp() {
 	}
 	if (size <= maxSize)
 		size++;
+
+	UGameInstanceFinal* gameInstance = Cast<UGameInstanceFinal>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (gameInstance)
+		gameInstance->playerSize = size;
 
 	if (GetCharacterMovement()->IsMovingOnGround() && speed == 0 && anim->GetFlipbook() == animIdle && size >= 2)
 	{

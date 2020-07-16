@@ -4,6 +4,7 @@
 #include "PaperCharacterParcial.h"
 #include "Paper_SimpleBlock.h"
 #include "PowerUpActor.h"
+#include "TimerManager.h"
 #include "Coin.h"
 #include "Engine/World.h"
 
@@ -19,6 +20,8 @@ ABaseMovaebleEnemy::ABaseMovaebleEnemy()
 void ABaseMovaebleEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	audioComp = FindComponentByClass<UAudioComponent>();
+	_flipBook = Cast<UPaperFlipbookComponent>(GetComponentByClass((UPaperFlipbookComponent::StaticClass())));
 
 	TArray<UBoxComponent*> boxes;
 	GetComponents<UBoxComponent>(boxes);
@@ -56,9 +59,6 @@ void ABaseMovaebleEnemy::BeginPlay()
 
 	if (rightBoxCollider)
 		rightBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseMovaebleEnemy::OnRightBoxBeginOverlap);
-
-// 	if (bottomBoxCollider)
-// 		bottomBoxCollider->OnComponent .AddDynamic(this, &ABaseMovaebleEnemy::OnRightBoxBeginOverlap);
 
 	_onTriggerAction.AddDynamic(this, &ABaseMovaebleEnemy::HitActor);
 	
@@ -127,13 +127,37 @@ void ABaseMovaebleEnemy::OnTopTrigger(AActor * OtherActor)
 	if (topBoxCollider)
 		topBoxCollider->OnComponentHit.RemoveAll(this);
 
+	if (rightBoxCollider)
+		rightBoxCollider->OnComponentBeginOverlap.RemoveAll(this);
+
+	if (leftBoxCollider)
+		leftBoxCollider->OnComponentBeginOverlap.RemoveAll(this);
+
 	if (OtherActor->IsA<APaperCharacterParcial>()) {
 		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
 		if (charP)
 			charP->AddImpulseAfterKillingEnemy();
 	}
 
+	if (audioComp)
+	{
+		audioComp->Play();
+		FTimerHandle timerHandle;
+		GetWorldTimerManager().SetTimer(timerHandle, this, &ABaseMovaebleEnemy::CallDestroy, 0.01, false, audioComp->Sound->Duration);
+	}
+	DisableObject();
+}
+
+void ABaseMovaebleEnemy::CallDestroy() {
 	Destroy();
+}
+
+void ABaseMovaebleEnemy::DisableObject() {
+	if (_flipBook)
+		_flipBook->DestroyComponent(true);
+
+	if (topBoxCollider)
+		topBoxCollider->DestroyComponent(true);
 }
 
 void ABaseMovaebleEnemy::OnSideTriggers(AActor * OtherActor)

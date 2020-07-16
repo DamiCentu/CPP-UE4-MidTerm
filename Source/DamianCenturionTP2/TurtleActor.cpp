@@ -16,8 +16,7 @@ ATurtleActor::ATurtleActor()
 void ATurtleActor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	_flipBook = Cast<UPaperFlipbookComponent>(GetComponentByClass((UPaperFlipbookComponent::StaticClass())));	
+	
 	_animWalking = _flipBook->GetFlipbook();
 }
 
@@ -48,6 +47,11 @@ void ATurtleActor::ResetPlayRateAnimation() {
 
 void ATurtleActor::OnTopTrigger(AActor * OtherActor)
 {
+	if (audioComp)
+	{
+		audioComp->Play();
+	}
+
 	if (OtherActor->IsA<APaperCharacterParcial>()) {
 		APaperCharacterParcial * charP = Cast<APaperCharacterParcial>(OtherActor);
 		if (charP)
